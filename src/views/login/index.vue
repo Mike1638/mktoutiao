@@ -1,7 +1,9 @@
 <template>
   <div class="login-container">
     <div class="page-nav">
-      <van-nav-bar class="page-nav-bar" title="登录" />
+      <van-nav-bar class="page-nav-bar" title="登录" >
+         <van-icon  slot="left" name="cross"  color="#1e1e1e" @click="$router.back()"/>
+      </van-nav-bar>
     </div>
     <div>
       <van-form ref="loginForm"  @submit="onSubmit">
@@ -72,6 +74,7 @@ export default {
         // token
         this.$store.commit('setUser', res.data.data)
         this.$toast.success('登录成功')
+        this.$router.back()
       }catch(err) {
         if(err.response.status == 400){
         this.$toast.fail('请输入正确的手机号和验证码')

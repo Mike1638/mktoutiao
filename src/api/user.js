@@ -18,3 +18,17 @@ export const sendSms = mobile=>{
     mobile
    })
 }
+
+export const getinfo = ()=>{
+   return request({
+      mothed:'GET',
+      url:'/app/v1_0/user',
+   })
+}
+
+export const getUserchannels= ()=>{
+   return request({
+      mothed:"GET",
+      url:'/app/v1_0/user/channels'
+   })
+}
