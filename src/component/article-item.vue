@@ -1,29 +1,31 @@
 <template>
-  <div>
-    <van-cell>
-      <div slot="title">{{ article.title }}</div>
-      <div slot="label">
-        <div  v-show="article.cover.type === 3" class="img-cover">
-          <div class="img-cover-img" v-for="(img,inedx) in article.cover.images" :key="inedx">
+    <van-cell class="article-wrap">
+      <div slot="title" class="title van-multi-ellipsis--l2">{{ article.title }}</div>
+      <div slot="label" class="label-wrap">
+        <div  v-if="article.cover.type === 3" class="img-cover">
+          <div v-for="(img,inedx) in article.cover.images" :key="inedx" class="img-cover-item">
             <van-image
-              width="100"
-              height="100"
-              :src="img"
+            class="img-cover-img" 
+            slot="default"
+            fit="cover" 
+            :src="img"
             />
           </div>
         </div>
-        <span slot="title">{{ article.aut_name }}</span>
-        <span slot="title">{{ article.comm_count }}</span>
-        <span slot="title">{{ article.pubdate }}</span>
+        <div class="label-info-wrap">
+          <span slot="title">{{ article.aut_name }}</span>
+          <span slot="title">{{ article.comm_count }}评论</span>
+          <span slot="title">{{ article.pubdate | relativeTime }}</span>
+        </div>
       </div>
       <van-image
-        v-show="article.cover.type === 1"
-        width="100"
-        height="100"
+        v-if="article.cover.type === 1"
+        slot="default"
+        class="right-img"
+        fit="cover"
         :src="article.cover.images[0]"
       />
-    </van-cell>
-  </div>
+    </van-cell>  
 </template>
 
 <script>
@@ -39,4 +41,44 @@ export default {
 </script>
 
 <style scoped lang="less">
+.article-wrap{
+  .title{
+    font-size: 32px;
+    color:#3a3a3a;
+  }
+  .van-cell__value{
+    flex:unset;
+    width: 232px;
+    height: 146px;
+    .right-img{
+      width: 232px;
+      height: 146px;
+      padding-left: 25px;
+    }
+  }
+  .label-wrap{
+    .label-info-wrap{
+      span{
+        font-size: 22px;
+        margin-right:25px;
+      }
+    }
+    .img-cover{
+    display: flex;
+    padding:30px 0;
+    .img-cover-item{
+     flex:1;
+     height:146px;
+     &:not(:last-child){
+      padding-right:4px;
+     }
+    .img-cover-img{
+      width: 100%;
+      height: 146px;
+    }
+    }
+  }
+  }
+  
+} 
 </style>

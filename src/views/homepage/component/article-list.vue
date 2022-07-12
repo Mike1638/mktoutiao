@@ -49,6 +49,7 @@ export default {
         })
         const {results} = data.data
         this.articles.push(...results)
+      console.log(articles)
         this.loading = false;
         if(results.length){
         this.timestamp = data.data.pre_timestamp
