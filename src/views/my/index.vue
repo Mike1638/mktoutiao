@@ -85,6 +85,7 @@ export default {
   },
   created() {
     if (this.user) {
+    console.log('this.uesr',this.user )
       this.loadgetinfo();
     }
   },

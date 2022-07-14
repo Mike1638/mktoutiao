@@ -10,38 +10,73 @@
       <Articlelist :channel="channel"></Articlelist>
       </van-tab>
       <div slot="nav-right" class="placeholder"></div>
-      <div slot="nav-right" class="iconright">
+      <div slot="nav-right" class="iconright" @click="isshowchannelchange = true">
         <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-yuedu"></use>
           </svg>
       </div>
     </van-tabs>
+    <van-popup
+      v-model="isshowchannelchange"
+      closeable
+      close-icon-position="top-left"
+      position="bottom"
+      :style="{ height: '100%' }"
+    >
+    <Channeledit :mychannel="userchannels" :active="active" @update-active="changeactive"></Channeledit> 
+    </van-popup>
   </div>
 </template>
 
 <script>
 import { getUserchannels } from '@/api/user'
 import Articlelist from './component/article-list.vue'
+import Channeledit from './component/channel-edit.vue'
+import { mapState } from 'vuex'
+import { getItem } from '../../utils/storage'
 export default {
     data() {
         return {
             active: 0,
-            userchannels: []
+            userchannels: [],
+            isshowchannelchange : false
         };
     },
-    components: {Articlelist},
+    computed: {
+    ...mapState(["user"]),
+    },
+    components: {Articlelist,Channeledit},
     created() {
         this.loadgetuserchannels();
+        console.log('this.user',this.user)
     },
     methods: {
         async loadgetuserchannels() {
             try {
+              if(this.user){
+                //登录
                 const { data } = await getUserchannels();
                 this.userchannels = data.data.channels;
+                 console.log('userchannels',this.userchannels )
+                }else{
+                // 未登录
+                  const localChannels =  getItem('TOUTIAO_CHANNELS')
+                  if(localChannels){
+                     this.userchannels = localChannels
+                  }else{
+                    //  获取默认的频道列表
+                      const { data } = await getUserchannels();
+                      this.userchannels = data.data.channels;
+                  }
+                } 
             }
             catch (err) {
                 this.$toast.fail("获取频道失败");
             }
+        },
+        changeactive(index,close = true){
+          this.active = index
+          this.isshowchannelchange = close
         }
     },
 }
