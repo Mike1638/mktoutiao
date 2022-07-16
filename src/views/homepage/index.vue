@@ -2,7 +2,7 @@
   <div class="home-container">
     <div class="page-nav">
       <van-nav-bar class="page-nav-bar" fixed>
-        <van-button slot="title"  round icon="search" size="small" class="page-nav-bar-but">搜索</van-button>
+        <van-button slot="title"  round icon="search" size="small" class="page-nav-bar-but" to="/search">搜索</van-button>
       </van-nav-bar>
     </div>
     <van-tabs v-model="active" animated swipeable class="channel-tabs">
