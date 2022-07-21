@@ -9,7 +9,7 @@
       </van-cell>
       <van-cell v-for="(value,index) in searchhistoryList" :key="index" :title="value" @click="$emit('search',value)">
         <div >
-            <van-icon slot="right-icon" name="close" v-if="isDeleteshow"  @click="deletehistoryitem(value,index)"/>
+            <van-icon slot="right-icon" name="close" v-if="isDeleteshow"  @click.stop="deletehistoryitem(value,index)"/>
         </div>
       </van-cell>
   </div>
@@ -30,9 +30,9 @@ export default {
   },
   methods:{
     deletehistoryitem(value,index){
+      console.log('index',index)
       this.searchhistoryList.splice(index,1)
     },
-   
   }
 }
 </script>

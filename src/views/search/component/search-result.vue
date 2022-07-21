@@ -32,6 +32,7 @@ export default {
   methods: {
     async onLoad() {
       try {
+        if(this.searchText ==="") return
         // 1. 请求获取数据
         const {data} =  await getsearchresult({
         page:this.page,
