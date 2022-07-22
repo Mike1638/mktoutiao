@@ -1,19 +1,19 @@
 <template>
   <van-button
-    :icon="iscollected ? 'star' : 'star-o'"
-    :class="{ collected: iscollected }"
+    :icon="isliked === 1 ? 'good-job' : 'good-job-o'"
+    :class="{ liked: isliked === 1 }"
     @click="toggle"
     :loading="isloading"
   />
 </template>
 
 <script>
-import { collectArticle, uncollectArticle } from "@/api/article.js";
+import { likeArticle, unlikeArticle } from "@/api/article.js";
 export default {
-  name: "CollectArticle",
+  name: "LikeArticle",
   model: {
-    prop: "iscollected",
-    event: "update-iscollected",
+    prop: "isliked",
+    event: "update-isliked",
   },
   data() {
     return {
@@ -21,8 +21,8 @@ export default {
     };
   },
   props: {
-    iscollected: {
-      type: Boolean,
+    isliked: {
+      type: Number,
       required: true,
     },
     artid: {
@@ -34,15 +34,16 @@ export default {
     async toggle() {
       this.loading = true;
       try {
-        if (this.iscollected) {
+        if (this.isliked === 1) {
           //取消关注
-          await uncollectArticle(this.artid);
+          await unlikeArticle(this.artid);
+          this.$emit("update-isliked", -1);
         } else {
           // 关注
-          await collectArticle(this.artid);
+          await likeArticle(this.artid);
+          this.$emit("update-isliked", 1);
         }
-        this.$emit("update-iscollected", !this.iscollected);
-        this.$toast.success(!this.iscollected ? "收藏成功" : "取消收藏");
+        this.$toast.success(this.isliked === -1 ? "点赞成功" : "取消点赞");
       } catch (error) {
         this.$toast("网络异常，请重试！");
       }
@@ -56,7 +57,7 @@ export default {
 .van-button:active::before {
   opacity: 0;
 }
-.collected {
+.liked {
   .van-icon {
     color: red;
   }

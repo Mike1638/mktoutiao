@@ -71,6 +71,26 @@
           ref="article-img"
         ></div>
         <van-divider>正文结束</van-divider>
+        <!-- 底部区域 -->
+        <div class="article-bottom">
+          <van-button class="comment-btn" type="default" round size="small"
+            >写评论</van-button
+          >
+          <van-icon class="comment-icon" name="comment-o" info="123" />
+          <CollectArticle
+            class="btn-item"
+            v-model="article.is_collected"
+            :artid="article.art_id"
+          ></CollectArticle>
+          <LikeArticle
+            class="btn-item"
+            v-model="article.attitude"
+            :artid="article.art_id"
+          ></LikeArticle>
+          <!-- <van-button class="btn-item" icon="good-job-o" /> -->
+          <van-icon name="share" color="#777777"></van-icon>
+        </div>
+        <!-- /底部区域 -->
       </div>
       <!-- /加载完成-文章详情 -->
       <!-- 加载失败：404 -->
@@ -90,17 +110,6 @@
       </div>
       <!-- /加载失败：其它未知错误（例如网络原因或服务端异常） -->
     </div>
-    <!-- 底部区域 -->
-    <div class="article-bottom">
-      <van-button class="comment-btn" type="default" round size="small"
-        >写评论</van-button
-      >
-      <van-icon name="comment-o" info="123" color="#777" />
-      <van-icon color="#777" name="star-o" />
-      <van-icon color="#777" name="good-job-o" />
-      <van-icon name="share" color="#777777"></van-icon>
-    </div>
-    <!-- /底部区域 -->
   </div>
 </template>
 
@@ -108,9 +117,11 @@
 import { getArticlebyId } from "@/api/article.js";
 import { ImagePreview } from "vant";
 import FollowUser from "../../components/follow-user.vue";
+import CollectArticle from "../../components/collect-article.vue";
+import LikeArticle from "../../components/like-article.vue";
 export default {
   name: "ArticleIndex",
-  components: { FollowUser },
+  components: { FollowUser, CollectArticle, LikeArticle },
   props: {
     articleId: {
       type: [Number, String, Object],
@@ -288,13 +299,20 @@ export default {
       color: #a7a7a7;
     }
 
-    .van-icon {
+    :deep(.van-icon) {
       font-size: 40px;
 
       .van-info {
         font-size: 16px;
         background-color: #e22829;
       }
+    }
+    :deep(.btn-item) {
+      border: none;
+      padding: 0;
+      height: 40px;
+      line-height: 40px;
+      color: #777777;
     }
   }
 }
