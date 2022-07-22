@@ -71,12 +71,16 @@
           ref="article-img"
         ></div>
         <van-divider>正文结束</van-divider>
+        <CommentList
+          :source="article.art_id"
+          @settotalcount="totalcount = $event"
+        ></CommentList>
         <!-- 底部区域 -->
         <div class="article-bottom">
           <van-button class="comment-btn" type="default" round size="small"
             >写评论</van-button
           >
-          <van-icon class="comment-icon" name="comment-o" info="123" />
+          <van-icon class="comment-icon" name="comment-o" :info="totalcount" />
           <CollectArticle
             class="btn-item"
             v-model="article.is_collected"
@@ -119,9 +123,10 @@ import { ImagePreview } from "vant";
 import FollowUser from "../../components/follow-user.vue";
 import CollectArticle from "../../components/collect-article.vue";
 import LikeArticle from "../../components/like-article.vue";
+import CommentList from "./components/comment-list.vue";
 export default {
   name: "ArticleIndex",
-  components: { FollowUser, CollectArticle, LikeArticle },
+  components: { FollowUser, CollectArticle, LikeArticle, CommentList },
   props: {
     articleId: {
       type: [Number, String, Object],
@@ -134,6 +139,7 @@ export default {
       loading: true,
       errStatus: 0,
       isloading: false,
+      totalcount: 0,
     };
   },
   computed: {},
