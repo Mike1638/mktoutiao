@@ -1,8 +1,17 @@
 /* eslint-disable eol-last */
 import axios from 'axios'
 import store from '@/store'
+import JSONbig from "json-bigint"
 const request = axios.create({
-  baseURL: 'http://api-toutiao-web.itheima.net' // 接口的基础路径
+  baseURL: 'http://api-toutiao-web.itheima.net', // 接口的基础路径
+  // 处理大数字的数据
+  transformResponse: [function (data) {
+    try {
+      return JSONbig.parse(data);
+    } catch (error) {
+      return data
+    }
+  }],
 })
 
 // 请求拦截器
@@ -10,7 +19,7 @@ const request = axios.create({
 request.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
   // 添加token
-  if(store.state.user){
+  if (store.state.user) {
     config.headers.Authorization = `Bearer ${store.state.user.token}`
   }
   return config;
